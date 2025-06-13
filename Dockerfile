@@ -1,27 +1,20 @@
-# Use a full Python image with essential build tools
-FROM python:3.10-slim
+# Use full Python image (includes build tools & common libs)
+FROM python:3.10
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    gcc \
-    libglib2.0-0 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy files
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy your entire application code into the container
+COPY . .
 
-COPY app.py .
+RUN pip install --no-cache-dir flask transformers torch
 
-# Expose Cloud Run default port
+# Upgrade pip and install required Python packages
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir flask transformers torch
+
+# Expose the port Cloud Run expects
 EXPOSE 8080
 
-# Start the Flask app
+# Start the Flask application
 CMD ["python", "app.py"]
