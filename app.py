@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from transformers import pipeline
 
 app = Flask(__name__)
-pipe = pipeline("text2text-generation", model="t5-small", tokenizer="t5-small")
+pipe = pipeline("text2text-generation", model="t5-base", tokenizer="t5-base")
 
 @app.route("/generate", methods=["POST"])
 def generate():
