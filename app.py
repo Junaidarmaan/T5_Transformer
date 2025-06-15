@@ -23,7 +23,7 @@ def generate():
     for chunk in text_chunks:
         mxl = int(len(chunk) * 0.40)
         mnl = int(len(chunk) * 0.25)
-        output = pipe( chunk, max_length=mxl, min_length=mnl, num_beams=4, early_stopping=True)
+        output = pipe("summarize : " + chunk, max_length=mxl, min_length=mnl, num_beams=4, early_stopping=True)
         result.append(output[0]["generated_text"])
 
     return jsonify({"summary": " ".join(result)})
